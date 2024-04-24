@@ -92,4 +92,68 @@ echo "invalid option! try again."
 ;;
 esac
 
-done
+done   
+
+
+#cal
+
+#!/bin/bash
+
+# Function to calculate factorial recursively
+factorial() {
+    local num=$1
+    if ((num == 0)); then
+        echo 1
+    elif ((num < 0)); then
+        echo "Factorial of negative number doesn't exist."
+    else
+        echo $((num * $(factorial $((num - 1)))))
+    fi
+}
+
+# Main script for calculator
+echo "Enter the first number:"
+read num1
+
+echo "Select operation:"
+echo "+ : Addition"
+echo "- : Subtraction"
+echo "* : Multiplication"
+echo "/ : Division"
+echo "% : Modulus"
+echo "^ : Power"
+read -p "Enter your choice: " operation
+
+echo "Enter the second number:"
+read num2
+
+case $operation in
+    "+")
+        result=$((num1 + num2))
+        ;;
+    "-")
+        result=$((num1 - num2))
+        ;;
+    "*")
+        result=$((num1 * num2))
+        ;;
+    "/")
+        if ((num2 == 0)); then
+            echo "Error: Division by zero!"
+            exit 1
+        fi
+        result=$(bc <<< "scale=2; $num1 / $num2")
+        ;;
+    "%")
+        result=$((num1 % num2))
+        ;;
+    "^")
+        result=$(bc <<< "$num1^$num2")
+        ;;
+    *)
+        echo "Invalid operation!"
+        exit 1
+        ;;
+esac
+
+echo "Result: $result"
